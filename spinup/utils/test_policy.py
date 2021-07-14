@@ -71,7 +71,7 @@ def load_tf_policy(fpath, itr, deterministic=False):
     print('\n\nLoading from %s.\n\n'%fname)
 
     # load the things!
-    sess = tf.Session()
+    sess = tf.compat.v1.Session()
     model = restore_tf_graph(sess, fname)
 
     # get the correct op for executing actions
@@ -136,6 +136,15 @@ def run_policy(env, get_action, max_ep_len=None, num_episodes=100, render=True):
     logger.log_tabular('EpLen', average_only=True)
     logger.dump_tabular()
 
+# Using pyvirtual
+def run_policy_headless(env, get_action, max_ep_len=None, num_episodes=100, render=True):
+    from easyprocess import EasyProcess
+    from pyvirtualdisplay import Display
+
+    with Display(backend="xvnc", size=(1200, 800), rfbport=5904) as disp:
+        run_policy(env, get_action, max_ep_len=max_ep_len, num_episodes=num_episodes, render=render)
+        time.sleep(10)
+
 
 if __name__ == '__main__':
     import argparse
@@ -150,4 +159,4 @@ if __name__ == '__main__':
     env, get_action = load_policy_and_env(args.fpath, 
                                           args.itr if args.itr >=0 else 'last',
                                           args.deterministic)
-    run_policy(env, get_action, args.len, args.episodes, not(args.norender))
+    run_policy_headless(env, get_action, args.len, args.episodes, not(args.norender))

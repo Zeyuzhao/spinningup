@@ -11,7 +11,7 @@ with open(join("spinup", "version.py")) as version_file:
 
 setup(
     name='spinup',
-    py_modules=['spinup'],
+    py_modules=['spinup2'],
     version=__version__,#'0.1',
     install_requires=[
         'cloudpickle',
@@ -25,7 +25,7 @@ setup(
         'pytest',
         'psutil',
         'scipy',
-        'seaborn==0.8.1',
+        'seaborn',
         'tensorflow',
         'torch',
         'tqdm'
